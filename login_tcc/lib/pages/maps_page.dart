@@ -55,64 +55,68 @@ class MapWidgetState extends State<MapWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-          title: const Text('Mapa'),
-          centerTitle: true,
-          toolbarHeight: 45,
-        ),
-        body: Center(
-            child: Stack(alignment: Alignment.bottomCenter, children: [
-          SizedBox(
-              child: Stack(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        backgroundColor: Colors.blue,
+        title: const Text('Mapa'),
+        centerTitle: true,
+        toolbarHeight: 45,
+      ),
+      body: Center(
+          child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          // Gerador do mapa
+          FlutterMap(
+            mapController: _mapController,
+            options: MapOptions(
+              keepAlive: true,
+              initialCenter: _currentLocation,
+              initialZoom: 16.0,
+              // Altera o valor do zoom com gesto pinça, anula o uso do Slider
+              onPositionChanged: (MapPosition position, bool gesture) {
+                if (gesture) {
+                  // Verifica o valor do zoom
+                  _zoomLevel = _mapController.camera.zoom;
+                }
+              },
+            ),
             children: [
-              // Gerador do mapa
-              FlutterMap(
-                mapController: _mapController,
-                options: MapOptions(
-                  keepAlive: true,
-                  initialCenter: _currentLocation,
-                  initialZoom: 16.0,
-                  // Altera o valor do zoom com gesto pinça, anula o uso do Slider
-                  onPositionChanged: (MapPosition position, bool gesture) {
-                    if (gesture) {
-                      // Verifica o valor do zoom
-                      _zoomLevel = _mapController.camera.zoom;
-                    }
-                  },
-                ),
-                children: [
-                  TileLayer(
-                    urlTemplate:
-                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    subdomains: const ['a', 'b', 'c'],
-                    // Melhora performance do mapa, reduzindo consumo
-                    tileProvider: CancellableNetworkTileProvider(),
-                  ),
-                  MarkerLayer(
-                    markers: [
-                      Marker(
-                        // Marcador
-                        child: const Icon(
-                          Icons.location_on,
-                          color: Colors.red,
-                          size: 40.0,
-                        ),
-                        width: 40.0,
-                        height: 40.0,
-                        point: _currentLocation,
-                      ),
-                    ],
+              TileLayer(
+                urlTemplate:
+                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                subdomains: const ['a', 'b', 'c'],
+                // Melhora performance do mapa, reduzindo consumo
+                tileProvider: CancellableNetworkTileProvider(),
+              ),
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    // Marcador
+                    child: const Icon(
+                      Icons.my_location_sharp,
+                      color: Colors.red,
+                      size: 30.0,
+                    ),
+                    width: 40.0,
+                    height: 40.0,
+                    point: _currentLocation,
+                    rotate: true,
                   ),
                 ],
               ),
+            ],
+          ),
 
-              // Usado para ajustar a posição da CheckBox
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              // Checkbox
               Positioned(
-                top: 500, // Ajuste a posição vertical conforme necessário
-                left: 320, // Ajuste a posição horizontal conforme necessário
+                bottom: 20, // Distância do canto inferior
+                right: 20, // Distância do canto direito
                 child: Checkbox(
-                  value: isTrackingEnabled, // Defina o valor do CheckBox
+                  value: isTrackingEnabled,
                   onChanged: (newValue) {
                     setState(() {
                       isTrackingEnabled = newValue!;
@@ -121,35 +125,43 @@ class MapWidgetState extends State<MapWidget> {
                 ),
               ),
 
-              // Aumentar zoom botão
+              // Botão de aumento de zoom
               Positioned(
-                  top: 520, // Ajuste a posição vertical conforme necessário
-                  left: 320, // Ajuste a posição horizontal conforme necessário
-                  child: ElevatedButton(
-                      onPressed: () {
-                        _zoomLevel++;
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xffc6c6c6),
-                      ),
-                      child: const Text('+',
-                          style: TextStyle(color: Colors.white)))),
+                bottom: 60, // Distância do canto inferior
+                right: 20, // Distância do canto direito
+                height: 32,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _zoomLevel++;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff001975),
+                  ),
+                  child: const Text('+',
+                      style: TextStyle(color: Colors.white, fontSize: 25)),
+                ),
+              ),
 
-              // Aumentar zoom botão
+              // Botão de diminuição de zoom
               Positioned(
-                  top: 555, // Ajuste a posição vertical conforme necessário
-                  left: 320, // Ajuste a posição horizontal conforme necessário
-                  child: ElevatedButton(
-                      onPressed: () {
-                        _zoomLevel--;
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xffc6c6c6),
-                      ),
-                      child: const Text('-',
-                          style: TextStyle(color: Colors.white))))
+                bottom: 95, // Distância do canto inferior
+                right: 20, // Distância do canto direito
+                height: 35,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _zoomLevel--;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff001975),
+                  ),
+                  child: const Text('-',
+                      style: TextStyle(color: Colors.white, fontSize: 25)),
+                ),
+              ),
             ],
-          )),
-        ])));
+          ),
+        ],
+      )),
+    );
   }
 }
