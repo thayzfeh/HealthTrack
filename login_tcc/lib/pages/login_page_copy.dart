@@ -15,7 +15,6 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
@@ -23,7 +22,7 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    //
     emailController.dispose();
     passwordController.dispose();
     super.dispose();

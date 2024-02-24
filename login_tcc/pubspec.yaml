@@ -36,6 +36,8 @@ dependencies:
 
   flutter_osm_plugin: ^0.70.4
 
+  flutter_map_cancellable_tile_provider: ^2.0.0
+
   # Animação das bolinhas na Splash Screen  
   flutter_spinkit: ^5.2.0 #era 5.0.0 antes
   # The following adds the Cupertino Icons font to your application.

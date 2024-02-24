@@ -25,32 +25,27 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-      child: Column(children: [
-        Container(
-            height: MediaQuery.of(context).size.height * 0.8, // 80% da tela
-            width: MediaQuery.of(context).size.width,
+      // Stack para que a SplashScreen fique por baixo do loading (checar v2 para entender)
+      child: Stack(alignment: Alignment.bottomCenter, children: [
+        SizedBox(
             child: EasySplashScreen(
-              logo: Image.asset(
-                'images/logo_tcc.png',
-                height: 100,
-              ),
-              backgroundColor: const Color(0xff001975),
-              showLoader: false,
-              // loaderColor: Colors.white,
-              /*loadingText: const Text("Loading...",
-              style: TextStyle(
-                  color: Colors.white, fontSize: 20, fontFamily: "Arial")),
-                  */
-              futureNavigator: futureCall(),
-            )),
+          logo: Image.asset(
+            'images/logo_tcc.png',
+            height: 100,
+          ),
+          backgroundColor: const Color(0xff001975),
+          showLoader: false,
+          futureNavigator: futureCall(),
+        )),
         Container(
-          height: MediaQuery.of(context).size.height * 0.2, // 20% da tela
+          height:
+              MediaQuery.of(context).size.height * 0.3, // 30% do total de tela
           color: const Color(0xff001975),
+          // Pontinhos
           child: const SpinKitThreeBounce(
-            // Pontinhos
-            color: Colors.white, // Cor dos pontinhos
-            size: 50.0,
-            duration: Duration(seconds: 1), // Tamanho dos pontinhos
+            color: Colors.white,
+            size: 45.0,
+            duration: Duration(seconds: 1),
           ),
         )
       ]),

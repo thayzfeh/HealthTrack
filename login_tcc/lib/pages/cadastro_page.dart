@@ -13,7 +13,7 @@ class _CadastroPageState extends State<CadastroPage> {
     return Scaffold(
         body: Center(
             child: Container(
-                color: Color(0xff001975),
+                color: const Color(0xff001975),
                 child: Column(children: [
                   TextFormField(
                     keyboardType: TextInputType.emailAddress,
