@@ -1,29 +1,338 @@
+import 'dart:math';
+
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 class CadastroPage extends StatefulWidget {
-  const CadastroPage({Key? key}) : super(key: key);
+  const CadastroPage({super.key});
 
   @override
   State<CadastroPage> createState() => _CadastroPageState();
 }
 
 class _CadastroPageState extends State<CadastroPage> {
+  final _phoneFormatter = MaskTextInputFormatter(
+    mask: '(##) #####-####',
+    filter: {'#': RegExp(r'[0-9]')},
+  );
+
+  final _dateFormatter = MaskTextInputFormatter(
+    mask: "##/##/####",
+    filter: {'#': RegExp(r'[0-9]')},
+  );
+
+  bool _showWarning = false;
+
+  final TextEditingController _textController = TextEditingController();
+  void _showTextFieldDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Digite o código de 6 digitos recebido no email:'),
+          content: TextField(
+            controller: _textController,
+            onChanged: (value) => validaCode(value),
+            decoration: const InputDecoration(
+              hintText: 'Digite aqui',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                print('Texto digitado: ${_textController.text}');
+                Navigator.of(context).pop(); // Fechar o diálogo
+              },
+              child: const Text('Salvar'),
+            ),
+            TextButton(
+              onPressed: () {
+                geraCodigo();
+              },
+              child: const Text('Gerar novo Código'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  String emailUser = "";
+
+  var appPassword1 = "";
+  var appPassword2 = "";
+  String texto = '';
+
+  bool isEmailValid = false;
+
+  void validaCode(String value) {
+    // ignore: unrelated_type_equality_checks
+    if (value != codeAsString) {
+      validEmail = "false";
+    } else {
+      isEmailValid = true;
+      validEmail = "true";
+    }
+  }
+
+  final Email email = Email();
+  void _sendEmail() async {
+    final success = await email.sendMessage(
+      emailUser,
+      'Código de verificação de Email para o App Login_tcc',
+      'Código para acesso: $codeAsString',
+    );
+
+    if (success && validEmail == "true") {
+      print('E-mail enviado com sucesso!');
+      print('Código aleatório de 6 dígitos: $codeAsString');
+    } else {
+      print('Falha ao enviar o e-mail.');
+    }
+  }
+
+  bool validDate = false;
+
+  final TextEditingController dateController = TextEditingController();
+
+  Object validateDate(String value) {
+    try {
+      final components = value.split('/');
+      if (components.length != 3) {
+        return 'Formato inválido. Use dd/mm/aaaa.';
+      }
+      final day = int.parse(components[0]);
+      final month = int.parse(components[1]);
+      final year = int.parse(components[2]);
+
+      if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900) {
+        return validDate = false;
+      }
+      return validDate = true; // Data válida
+    } catch (e) {
+      return validDate = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color(0xff001975),
+        appBar: AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height * 0.005,
+          shadowColor: const Color(0xff001975),
+          backgroundColor: const Color(0xff001975),
+        ),
         body: Center(
             child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(45, 20, 45, 0),
                 color: const Color(0xff001975),
-                child: Column(children: [
+                child: SingleChildScrollView(
+                    child: Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed("/login");
+                        },
+                        style: ElevatedButton.styleFrom(
+                            alignment: Alignment.center,
+                            backgroundColor: const Color(0xff001975),
+                            shadowColor: Colors.transparent,
+                            padding: const EdgeInsets.fromLTRB(0, 0, 12, 0)),
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 35,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const Image(
+                        image: AssetImage('images/logo_tcc.png'),
+                        filterQuality: FilterQuality.high,
+                        width: 80,
+                      ),
+                      const SizedBox(
+                        width: 68,
+                      )
+                    ],
+                  ),
                   TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(color: Colors.white, fontSize: 25),
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(0, 20, 30, 8),
+                    keyboardType: TextInputType.name,
+                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
                       labelText: 'Nome',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                    ),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.datetime,
+                    controller: dateController,
+                    onChanged: (value) => validateDate(value),
+                    inputFormatters: [_dateFormatter],
+                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
+                      labelText: 'Data de nascimento',
+                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                    ),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [_phoneFormatter],
+                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
+                      labelText: 'Telefone',
+                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                    ),
+                  ),
+                  Form(
+                    autovalidateMode: AutovalidateMode.always,
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      validator: ((value) => EmailValidator.validate(value!)
+                          ? validEmail = "true"
+                          : validEmail = "false"),
+                      onChanged: (value) {
+                        emailUser = value;
+                      },
+                      style:
+                          GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                      decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(0, 20, 30, 8),
+                          labelText: 'E-mail',
+                          labelStyle: GoogleFonts.arimo(color: Colors.white),
+                          hintText: "Coloque '.com' no final",
+                          hintStyle: const TextStyle(
+                              color: Color.fromRGBO(255, 255, 255, 0.5))),
+                    ),
+                  ),
+                  TextFormField(
+                    onChanged: (value) {
+                      appPassword1 = value;
+                    },
+                    keyboardType: TextInputType.visiblePassword,
+                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
+                      labelText: 'Senha',
+                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                    ),
+                  ),
+                  TextFormField(
+                    initialValue: appPassword1,
+                    onChanged: (value) {
+                      appPassword2 = value;
+                    },
+                    keyboardType: TextInputType.visiblePassword,
+                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
+                      labelText: 'Confirmar senha',
+                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                    ),
+                  ),
+                  if (_showWarning)
+                    Text(
+                      texto,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: 350.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        gradient: const LinearGradient(colors: [
+                          Color(0xff5de0e6),
+                          Color(0xff004aad),
+                        ])),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          // Validadores de informação
+                          if (validDate == false) {
+                            _showWarning = true;
+                            texto =
+                                "A data de nascimento está errada, deve ser dd/mm/aaaa";
+                          } else if (isEmailValid == false) {
+                            geraCodigo();
+                            _sendEmail();
+                            _showTextFieldDialog(context);
+                          } else if (validEmail == "false") {
+                            _showWarning = true;
+                            texto = "O Email está invalido";
+                          } else if (appPassword1 != appPassword2 ||
+                              appPassword1.length <= 8) {
+                            _showWarning = true;
+                            texto = "Senhas não coincidem ou campo vazio";
+                          } else {
+                            _showWarning = false;
+                            texto = "";
+                            Navigator.of(context).pushReplacementNamed("/maps");
+                          }
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        textStyle:
+                            const TextStyle(color: Colors.white, fontSize: 25),
+                        padding: const EdgeInsets.all(25),
+                      ),
+                      child: Text(
+                        'Cadastro',
+                        style: GoogleFonts.arimo(color: Colors.white),
+                      ),
                     ),
                   )
-                ]))));
+                ])))));
+  }
+}
+
+final random = Random();
+var sixDigitCode = 100000 + random.nextInt(900000);
+String codeAsString = '$sixDigitCode';
+void geraCodigo() {
+  sixDigitCode = 100000 + random.nextInt(900000);
+  codeAsString = '$sixDigitCode';
+}
+
+String validEmail = "";
+
+class Email {
+  final String username = 'logintcc222@gmail.com'; // Seu e-mail
+  final String appPassword = 'sqog pflp kzbu olsr'; // Sua senha
+
+  Future<bool> sendMessage(
+      String recipient, String subject, String body) async {
+    final smtpServer = gmail(username, appPassword);
+
+    final message = Message()
+      ..from = Address(username)
+      ..recipients.add(recipient)
+      ..subject = subject
+      ..text = body;
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      // ignore: unnecessary_null_comparison
+      validEmail = "true";
+      print("recebido");
+      // ignore: unnecessary_null_comparison
+      return sendReport != null;
+    } catch (e) {
+      print('Erro ao enviar e-mail: $e');
+      validEmail = "false";
+      return false;
+    }
   }
 }

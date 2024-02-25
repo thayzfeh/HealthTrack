@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:login_tcc/controllers/login_controller.dart';
 import 'package:login_tcc/models/user.dart';
 import 'package:flutter/material.dart';
@@ -59,18 +60,18 @@ class _LoginPageState extends State<LoginPage> {
                       controller: emailController,
                       autofocus: true,
                       keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.white, fontSize: 25),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 8),
+                      style: GoogleFonts.arimo(color: Colors.white, fontSize: 25),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 8),
                         labelText: 'Usuário ou e-mail',
-                        labelStyle: TextStyle(color: Colors.white),
-                        suffixIcon: Image(
+                        labelStyle: GoogleFonts.arimo(color: Colors.white),
+                        suffixIcon: const Image(
                           image: AssetImage('images/user.png'),
                           width: 15,
                           color: Colors.white,
                           alignment: Alignment.bottomRight,
                         ),
-                        suffixIconConstraints: BoxConstraints(
+                        suffixIconConstraints: const BoxConstraints(
                           minWidth: 25, // Largura mínima do ícone
                           minHeight: 25, // Altura mínima do ícone
                         ),
@@ -83,18 +84,18 @@ class _LoginPageState extends State<LoginPage> {
                         keyboardType: TextInputType.text,
                         obscureText: true,
                         style:
-                            const TextStyle(color: Colors.white, fontSize: 25),
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 8),
+                            GoogleFonts.arimo(color: Colors.white, fontSize: 25),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 8),
                           labelText: 'Senha',
-                          labelStyle: TextStyle(color: Colors.white),
-                          suffixIcon: Image(
+                          labelStyle: GoogleFonts.arimo(color: Colors.white),
+                          suffixIcon: const Image(
                             image: AssetImage('images/lock.png'),
                             width: 15,
                             color: Colors.white,
                             alignment: Alignment.bottomRight,
                           ),
-                          suffixIconConstraints: BoxConstraints(
+                          suffixIconConstraints: const BoxConstraints(
                             minWidth: 25, // Largura mínima do ícone
                             minHeight: 25, // Altura mínima do ícone
                           ),
@@ -118,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.white, fontSize: 25),
                               padding: const EdgeInsets.all(25),
                             ),
-                            child: const Text('Entrar'))),
+                            child: Text('Entrar', style: GoogleFonts.arimo(color: Colors.white)))),
                     const SizedBox(height: 10),
                     const Text('OU',
                         style: TextStyle(fontSize: 22, color: Colors.white)),
@@ -146,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.white, fontSize: 25),
                               padding: const EdgeInsets.all(25),
                             ),
-                            child: const Text('Cadastrar-se'))),
+                            child: Text('Cadastrar-se', style: GoogleFonts.arimo(color: Colors.white)))),
                   ],
                 ),
               )),
