@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
             email: emailController.text, password: passwordController.text));
     if (loginController.isValid()) {
       Navigator.of(context)
-          .pushReplacementNamed('/maps'); // Manda pra tela inicial
+          .pushReplacementNamed('/home'); // Manda pra tela inicial
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Login incorreto!!!'),
