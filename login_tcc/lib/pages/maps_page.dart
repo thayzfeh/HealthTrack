@@ -96,7 +96,7 @@ class MapWidgetState extends State<MapWidget> {
                     child: const Icon(
                       Icons.my_location_sharp,
                       color: Colors.red,
-                      size: 30.0,
+                      size: 16.0,
                     ),
                     width: 40.0,
                     height: 40.0,
