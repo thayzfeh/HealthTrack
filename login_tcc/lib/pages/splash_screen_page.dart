@@ -1,3 +1,4 @@
+import 'package:login_tcc/pages/home_page.dart';
 import 'package:login_tcc/pages/login_page.dart';
 import 'package:login_tcc/services/prefs_service.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
@@ -16,7 +17,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     bool isAuth = await PrefsService.isAuth();
     await Future.delayed(const Duration(seconds: 5));
     if (isAuth) {
-      return Future.value(const LoginPage());
+      return Future.value(const HomePage());
     }
     return Future.value(const LoginPage());
   }
