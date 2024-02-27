@@ -44,8 +44,8 @@ class _LoginPageState extends State<LoginPage> {
               height: double.infinity,
               width: double.infinity,
               decoration: const BoxDecoration(color: Color(0xff001975)),
-              padding: const EdgeInsets.fromLTRB(45, 60, 45, 20),
               child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(45, 30, 45, 30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -60,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
                       controller: emailController,
                       autofocus: true,
                       keyboardType: TextInputType.emailAddress,
-                      style: GoogleFonts.arimo(color: Colors.white, fontSize: 25),
+                      style:
+                          GoogleFonts.arimo(color: Colors.white, fontSize: 25),
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 8),
                         labelText: 'Usuário ou e-mail',
@@ -83,10 +84,11 @@ class _LoginPageState extends State<LoginPage> {
                         autofocus: true,
                         keyboardType: TextInputType.text,
                         obscureText: true,
-                        style:
-                            GoogleFonts.arimo(color: Colors.white, fontSize: 25),
+                        style: GoogleFonts.arimo(
+                            color: Colors.white, fontSize: 25),
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 8),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(0, 20, 0, 8),
                           labelText: 'Senha',
                           labelStyle: GoogleFonts.arimo(color: Colors.white),
                           suffixIcon: const Image(
@@ -119,7 +121,9 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.white, fontSize: 25),
                               padding: const EdgeInsets.all(25),
                             ),
-                            child: Text('Entrar', style: GoogleFonts.arimo(color: Colors.white)))),
+                            child: Text('Entrar',
+                                style:
+                                    GoogleFonts.arimo(color: Colors.white)))),
                     const SizedBox(height: 10),
                     const Text('OU',
                         style: TextStyle(fontSize: 22, color: Colors.white)),
@@ -147,7 +151,9 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.white, fontSize: 25),
                               padding: const EdgeInsets.all(25),
                             ),
-                            child: Text('Cadastrar-se', style: GoogleFonts.arimo(color: Colors.white)))),
+                            child: Text('Cadastrar-se',
+                                style:
+                                    GoogleFonts.arimo(color: Colors.white)))),
                   ],
                 ),
               )),

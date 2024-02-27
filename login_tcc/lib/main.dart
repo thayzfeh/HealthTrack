@@ -20,7 +20,7 @@ class TccHome extends StatelessWidget {
           '/login': (context) => const LoginPage(),
           '/cadastro': (context) => const CadastroPage(),
           '/maps': (context) => const MapWidget(),
-          '/home': (context) => const HomePage(),
+          '/home': (context) => const HomePage()
         });
   }
 }

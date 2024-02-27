@@ -15,6 +15,7 @@ class CadastroPage extends StatefulWidget {
 }
 
 class _CadastroPageState extends State<CadastroPage> {
+  // Mascara (Formatação) para os Campos de Texto "Telefone" e "Data de Nascimento"
   final _phoneFormatter = MaskTextInputFormatter(
     mask: '(##) #####-####',
     filter: {'#': RegExp(r'[0-9]')},
@@ -44,8 +45,7 @@ class _CadastroPageState extends State<CadastroPage> {
           actions: [
             TextButton(
               onPressed: () {
-                print('Texto digitado: ${_textController.text}');
-                Navigator.of(context).pop(); // Fechar o diálogo
+                Navigator.of(context).pop();
               },
               child: const Text('Salvar'),
             ),
@@ -67,15 +67,13 @@ class _CadastroPageState extends State<CadastroPage> {
   var appPassword2 = "";
   String texto = '';
 
-  bool isEmailValid = false;
+  bool isCodeValid = false;
 
   void validaCode(String value) {
-    // ignore: unrelated_type_equality_checks
     if (value != codeAsString) {
-      validEmail = "false";
+      isCodeValid = false;
     } else {
-      isEmailValid = true;
-      validEmail = "true";
+      isCodeValid = true;
     }
   }
 
@@ -83,16 +81,35 @@ class _CadastroPageState extends State<CadastroPage> {
   void _sendEmail() async {
     final success = await email.sendMessage(
       emailUser,
-      'Código de verificação de Email para o App Login_tcc',
+      'Código de verificação de Email para o App Login_tcc: $codeAsString',
       'Código para acesso: $codeAsString',
     );
 
-    if (success && validEmail == "true") {
-      print('E-mail enviado com sucesso!');
-      print('Código aleatório de 6 dígitos: $codeAsString');
+    if (success && isEmailValid == "true") {
+      dialogoErro('E-mail enviado com sucesso!');
     } else {
-      print('Falha ao enviar o e-mail.');
+      dialogoErro('Falha ao enviar o e-mail.');
     }
+  }
+
+  void dialogoErro(String texto) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Erro!'),
+          content: Text(texto),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   bool validDate = false;
@@ -199,8 +216,8 @@ class _CadastroPageState extends State<CadastroPage> {
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: ((value) => EmailValidator.validate(value!)
-                          ? validEmail = "true"
-                          : validEmail = "false"),
+                          ? isEmailValid = "true"
+                          : isEmailValid = "false"),
                       onChanged: (value) {
                         emailUser = value;
                       },
@@ -263,13 +280,13 @@ class _CadastroPageState extends State<CadastroPage> {
                             _showWarning = true;
                             texto =
                                 "A data de nascimento está errada, deve ser dd/mm/aaaa";
-                          } else if (isEmailValid == false) {
+                          } else if (isEmailValid == "false") {
+                            _showWarning = true;
+                            texto = "O Email está invalido";
+                          } else if (isCodeValid == false) {
                             geraCodigo();
                             _sendEmail();
                             _showTextFieldDialog(context);
-                          } else if (validEmail == "false") {
-                            _showWarning = true;
-                            texto = "O Email está invalido";
                           } else if (appPassword1 != appPassword2 ||
                               appPassword1.length <= 8) {
                             _showWarning = true;
@@ -277,7 +294,8 @@ class _CadastroPageState extends State<CadastroPage> {
                           } else {
                             _showWarning = false;
                             texto = "";
-                            Navigator.of(context).pushReplacementNamed("/maps");
+                            Navigator.of(context)
+                                .pushReplacementNamed("/login");
                           }
                         });
                       },
@@ -298,6 +316,7 @@ class _CadastroPageState extends State<CadastroPage> {
   }
 }
 
+// Gerador de código de 6 digítos
 final random = Random();
 var sixDigitCode = 100000 + random.nextInt(900000);
 String codeAsString = '$sixDigitCode';
@@ -306,12 +325,13 @@ void geraCodigo() {
   codeAsString = '$sixDigitCode';
 }
 
-String validEmail = "";
+String isEmailValid = "";
 
+// Responsável pelo envio do e-mail de verificação
 class Email {
-  final String username = 'logintcc222@gmail.com'; // Seu e-mail
-  final String appPassword = 'sqog pflp kzbu olsr'; // Sua senha
-
+  final String username =
+      'logintcc222@gmail.com'; // Email usado usado no envio do código
+  final String appPassword = 'sqog pflp kzbu olsr'; // Senha do e-mail
   Future<bool> sendMessage(
       String recipient, String subject, String body) async {
     final smtpServer = gmail(username, appPassword);
@@ -324,14 +344,11 @@ class Email {
 
     try {
       final sendReport = await send(message, smtpServer);
-      // ignore: unnecessary_null_comparison
-      validEmail = "true";
-      print("recebido");
+      isEmailValid = "true";
       // ignore: unnecessary_null_comparison
       return sendReport != null;
     } catch (e) {
-      print('Erro ao enviar e-mail: $e');
-      validEmail = "false";
+      isEmailValid = "false";
       return false;
     }
   }
