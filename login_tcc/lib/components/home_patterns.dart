@@ -38,7 +38,8 @@ class _HomeContainerState extends State<HomeContainer> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
                 child: Icon(
                   widget._icon,
                   color: widget._color,
@@ -74,7 +75,11 @@ class _HomeContainerState extends State<HomeContainer> {
                       },
                       style: ElevatedButton.styleFrom(
                           alignment: Alignment.centerRight,
-                          padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.1, 0, 0, 0)),
+                          padding: EdgeInsets.fromLTRB(
+                              MediaQuery.of(context).size.width * 0.1,
+                              0,
+                              0,
+                              0)),
                       child: const Text("Expandir",
                           style: TextStyle(color: Colors.black))),
                   IconButton(
@@ -83,7 +88,8 @@ class _HomeContainerState extends State<HomeContainer> {
                       },
                       style: ElevatedButton.styleFrom(
                         alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width * 0.02, 0),
+                        padding: EdgeInsets.fromLTRB(
+                            0, 0, MediaQuery.of(context).size.width * 0.02, 0),
                       ),
                       icon: const Icon(Icons.arrow_forward_ios)),
                 ],
@@ -96,35 +102,28 @@ class _HomeContainerState extends State<HomeContainer> {
   }
 }
 
-class RetroButton extends StatefulWidget {
-  const RetroButton({
+class HomeNavigationDestination extends StatefulWidget {
+  const HomeNavigationDestination({
     super.key,
-    required String path,
-  }) : _path = path;
+    required IconData icon,
+    required String label,
+  })  : _icon = icon,
+        _label = label;
 
-  final String _path;
+  final IconData _icon;
+  final String _label;
 
   @override
-  State<RetroButton> createState() => _RetroButtonState();
+  State<HomeNavigationDestination> createState() =>
+      _HomeNavigationDestinationState();
 }
 
-class _RetroButtonState extends State<RetroButton> {
+class _HomeNavigationDestinationState extends State<HomeNavigationDestination> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed(widget._path);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 35,
-            color: ColorStyle.white,
-          ),
-        ),
-      ],
+    return NavigationDestination(
+      icon: Icon(widget._icon, size: MediaQuery.of(context).size.width * 0.1),
+      label: widget._label,
     );
   }
 }

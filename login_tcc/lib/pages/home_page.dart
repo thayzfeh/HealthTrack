@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:login_tcc/components/buttons.dart';
 import 'package:login_tcc/components/colors.dart';
-import 'package:login_tcc/components/home_container.dart';
+import 'package:login_tcc/components/home_patterns.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +12,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentSelectedIndex = 1;
+
+  final rotas = <int, String>{0: '/connection', 1: '/home'};
 
   @override
   Widget build(BuildContext context) {
@@ -29,24 +32,14 @@ class _HomePageState extends State<HomePage> {
           ),
           backgroundColor: ColorStyle.white,
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentSelectedIndex = index;
-            });
+          onDestinationSelected: (index) {
+            Navigator.pushReplacementNamed(context, rotas[index]!);
           },
-          destinations: <Widget>[
-            NavigationDestination(
-              icon: Icon(Icons.share, size: MediaQuery.of(context).size.width * 0.1),
-              label: 'Conexões',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.desktop_windows_outlined, size: MediaQuery.of(context).size.width * 0.1),
-              label: 'Monitoramento',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person, size: MediaQuery.of(context).size.width * 0.1),
-              label: "Perfil",
-            ),
+          destinations: const <Widget>[
+            HomeNavigationDestination(icon: Icons.share, label: 'Conexões'),
+            HomeNavigationDestination(
+                icon: Icons.desktop_windows_outlined, label: "Monitoramento"),
+            HomeNavigationDestination(icon: Icons.person, label: "Perfil"),
           ],
         ),
         body: Padding(
@@ -57,7 +50,9 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const RetroButton(path: '/login',),
+                const RetroButton(
+                  path: '/login',
+                ),
                 // Batimentos
                 const HomeContainer(
                     icon: Icons.heart_broken,
@@ -68,9 +63,9 @@ class _HomePageState extends State<HomePage> {
                   height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 // Pressão
-                HomeContainer(
+                const HomeContainer(
                   icon: Icons.tire_repair,
-                  color: Colors.yellow.shade700,
+                  color: ColorStyle.yellow,
                   title: '120',
                   subtitle: 'mmHg',
                 ),
@@ -80,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 // Glicemia
                 const HomeContainer(
                     icon: Icons.water_drop,
-                    color: Colors.red,
+                    color: ColorStyle.red,
                     title: "120",
                     subtitle: "mg/dl")
               ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:login_tcc/components/home_container.dart';
+import 'package:login_tcc/components/buttons.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_tcc/components/colors.dart';
@@ -30,13 +30,15 @@ class _BpmPageState extends State<BpmPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, 0, 0, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width * 0.02, 0, 0, 0),
                     child: const RetroButton(
                       path: '/home',
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width * 0.15, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        0, 0, MediaQuery.of(context).size.width * 0.15, 0),
                     child: Text(
                       "Batimentos",
                       style: GoogleFonts.arimo(
@@ -56,7 +58,11 @@ class _BpmPageState extends State<BpmPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.07),
+                    padding: EdgeInsets.fromLTRB(
+                        0,
+                        0,
+                        MediaQuery.of(context).size.width * 0.01,
+                        MediaQuery.of(context).size.height * 0.07),
                     child: Icon(
                       Icons.heart_broken,
                       color: ColorStyle.green,
@@ -100,7 +106,6 @@ class _BpmPageState extends State<BpmPage> {
                   majorGridLines:
                       MajorGridLines(width: 0.3, color: Colors.grey),
                 ),
-                // title: const ChartTitle(text: 'Leituras de Batimentos Cardíacos'),
                 series: [
                   LineSeries<BatimentosData, String>(
                     dataSource: <BatimentosData>[
@@ -128,7 +133,6 @@ class _BpmPageState extends State<BpmPage> {
                       BatimentosData('21:00', 72),
                       BatimentosData('22:00', 70),
                       BatimentosData('23:00', 68),
-                      // Adicione mais dados conforme necessário
                     ],
                     xValueMapper: (BatimentosData data, _) => data.time,
                     yValueMapper: (BatimentosData data, _) => data.value,
