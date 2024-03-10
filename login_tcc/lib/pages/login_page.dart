@@ -1,4 +1,6 @@
-import 'package:google_fonts/google_fonts.dart';
+import 'package:login_tcc/components/button_container.dart';
+import 'package:login_tcc/components/colors.dart';
+import 'package:login_tcc/components/login_textformfield.dart';
 import 'package:login_tcc/controllers/login_controller.dart';
 import 'package:login_tcc/models/user.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          toolbarHeight: 100,
+          toolbarHeight: MediaQuery.of(context).size.height * 0.1,
           automaticallyImplyLeading: false,
           centerTitle: true,
           elevation: 0,
@@ -43,124 +45,53 @@ class _LoginPageState extends State<LoginPage> {
           child: Container(
               height: double.infinity,
               width: double.infinity,
-              decoration: const BoxDecoration(color: Color(0xff001975)),
+              decoration: const BoxDecoration(color: ColorStyle.background),
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(45, 30, 45, 30),
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width * 0.1,
+                    MediaQuery.of(context).size.height * 0.08,
+                    MediaQuery.of(context).size.width * 0.1,
+                    MediaQuery.of(context).size.height * 0.08),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 15),
-                    const Image(
-                      image: AssetImage('images/logo_tcc.png'),
+                    Image(
+                      image: const AssetImage('images/logo_tcc.png'),
                       filterQuality: FilterQuality.high,
-                      width: 100,
+                      width: MediaQuery.of(context).size.width * 0.25,
                     ),
                     const SizedBox(height: 25),
-                    TextFormField(
+                    LoginTextFormField(
                       controller: emailController,
-                      autofocus: true,
                       keyboardType: TextInputType.emailAddress,
-                      style:
-                          GoogleFonts.arimo(color: Colors.white, fontSize: 25),
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 8),
-                        labelText: 'Usuário ou e-mail',
-                        labelStyle: GoogleFonts.arimo(color: Colors.white),
-                        suffixIcon: const Image(
-                          image: AssetImage('images/user.png'),
-                          width: 15,
-                          color: Colors.white,
-                          alignment: Alignment.bottomRight,
-                        ),
-                        suffixIconConstraints: const BoxConstraints(
-                          minWidth: 25, // Largura mínima do ícone
-                          minHeight: 25, // Altura mínima do ícone
-                        ),
-                      ),
+                      text: 'Usuário ou e-mail',
+                      asset: 'images/user.png',
+                      isPassword: false,
                     ),
                     const SizedBox(height: 5),
-                    TextFormField(
+                    LoginTextFormField(
                         controller: passwordController,
-                        autofocus: true,
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        style: GoogleFonts.arimo(
-                            color: Colors.white, fontSize: 25),
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(0, 20, 0, 8),
-                          labelText: 'Senha',
-                          labelStyle: GoogleFonts.arimo(color: Colors.white),
-                          suffixIcon: const Image(
-                            image: AssetImage('images/lock.png'),
-                            width: 15,
-                            color: Colors.white,
-                            alignment: Alignment.bottomRight,
-                          ),
-                          suffixIconConstraints: const BoxConstraints(
-                            minWidth: 25, // Largura mínima do ícone
-                            minHeight: 25, // Altura mínima do ícone
-                          ),
-                        )),
+                        keyboardType: TextInputType.visiblePassword,
+                        text: 'Senha',
+                        asset: 'images/lock.png',
+                        isPassword: true),
                     const SizedBox(height: 60),
-                    Container(
-                        width: 350.0,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            gradient: const LinearGradient(colors: [
-                              Color(0xff5de0e6),
-                              Color(0xff004aad),
-                            ])),
-                        child: ElevatedButton(
-                            // Button 'entrar'
-                            onPressed: _onPressedButton,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              shadowColor: Colors.transparent,
-                              textStyle: const TextStyle(
-                                  color: Colors.white, fontSize: 25),
-                              padding: const EdgeInsets.all(25),
-                            ),
-                            child: Text('Entrar',
-                                style:
-                                    GoogleFonts.arimo(color: Colors.white)))),
+                    ButtonContainer(texto: "Entrar", nav: _onPressedLogin),
                     const SizedBox(height: 10),
                     const Text('OU',
-                        style: TextStyle(fontSize: 22, color: Colors.white)),
+                        style:
+                            TextStyle(fontSize: 22, color: ColorStyle.white)),
                     const SizedBox(height: 10),
-                    Container(
-                        width: 350.0,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            gradient: const LinearGradient(colors: [
-                              Color(0xff5de0e6),
-                              Color(0xff004aad),
-                              // 0xff5de0e6 - gradiente 1
-                              // 0xff004aad - gradiente 2
-                            ])),
-                        child: ElevatedButton(
-                            // Button 'cadastrar-se'
-                            onPressed: () => {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/cadastro'),
-                                },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              shadowColor: Colors.transparent,
-                              textStyle: const TextStyle(
-                                  color: Colors.white, fontSize: 25),
-                              padding: const EdgeInsets.all(25),
-                            ),
-                            child: Text('Cadastrar-se',
-                                style:
-                                    GoogleFonts.arimo(color: Colors.white)))),
+                    ButtonContainer(
+                        texto: 'Cadastrar-se', nav: _onPressedCadastro),
                   ],
                 ),
               )),
         ));
   }
 
-  void _onPressedButton() {
+  void _onPressedLogin() {
     var loginController = LoginController(
         user: User(
             email: emailController.text, password: passwordController.text));
@@ -175,5 +106,9 @@ class _LoginPageState extends State<LoginPage> {
       emailController.clear();
       passwordController.clear();
     }
+  }
+
+  void _onPressedCadastro() {
+    Navigator.of(context).pushReplacementNamed('/cadastro');
   }
 }

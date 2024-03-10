@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
+import 'package:login_tcc/components/colors.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -135,10 +136,10 @@ class MapWidgetState extends State<MapWidget> {
                     _zoomLevel++;
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff001975),
+                    backgroundColor: ColorStyle.background,
                   ),
                   child: const Text('+',
-                      style: TextStyle(color: Colors.white, fontSize: 25)),
+                      style: TextStyle(color: ColorStyle.white, fontSize: 25)),
                 ),
               ),
 
@@ -152,10 +153,10 @@ class MapWidgetState extends State<MapWidget> {
                     _zoomLevel--;
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff001975),
+                    backgroundColor: ColorStyle.background,
                   ),
                   child: const Text('-',
-                      style: TextStyle(color: Colors.white, fontSize: 25)),
+                      style: TextStyle(color: ColorStyle.white, fontSize: 25)),
                 ),
               ),
             ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:login_tcc/pages/bpm_page.dart';
 import 'package:login_tcc/pages/cadastro_page.dart';
 import 'package:login_tcc/pages/home_page.dart';
 import 'package:login_tcc/pages/splash_screen_page.dart';
@@ -12,6 +14,10 @@ class TccHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
@@ -20,7 +26,8 @@ class TccHome extends StatelessWidget {
           '/login': (context) => const LoginPage(),
           '/cadastro': (context) => const CadastroPage(),
           '/maps': (context) => const MapWidget(),
-          '/home': (context) => const HomePage()
+          '/home': (context) => const HomePage(),
+          '/bpm': (context) => const BpmPage(),
         });
   }
 }
