@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_tcc/components/colors.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -93,23 +94,9 @@ class _CadastroPageState extends State<CadastroPage> {
   }
 
   void dialogoErro(String texto) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Erro!'),
-          content: Text(texto),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(texto),
+      ));
   }
 
   bool validDate = false;
@@ -138,18 +125,18 @@ class _CadastroPageState extends State<CadastroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff001975),
+        backgroundColor: ColorStyle.background,
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height * 0.005,
-          shadowColor: const Color(0xff001975),
-          backgroundColor: const Color(0xff001975),
+          shadowColor: ColorStyle.background,
+          backgroundColor: ColorStyle.background,
         ),
         body: Center(
             child: Container(
                 height: double.infinity,
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(45, 20, 45, 0),
-                color: const Color(0xff001975),
+                color: ColorStyle.background,
                 child: SingleChildScrollView(
                     child: Column(children: [
                   Row(
@@ -161,13 +148,13 @@ class _CadastroPageState extends State<CadastroPage> {
                         },
                         style: ElevatedButton.styleFrom(
                             alignment: Alignment.center,
-                            backgroundColor: const Color(0xff001975),
+                            backgroundColor: ColorStyle.background,
                             shadowColor: Colors.transparent,
                             padding: const EdgeInsets.fromLTRB(0, 0, 12, 0)),
                         child: const Icon(
                           Icons.arrow_back_ios,
                           size: 35,
-                          color: Colors.white,
+                          color: ColorStyle.white,
                         ),
                       ),
                       const Image(
@@ -182,11 +169,12 @@ class _CadastroPageState extends State<CadastroPage> {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.name,
-                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    style: GoogleFonts.arimo(
+                        color: ColorStyle.white, fontSize: 15),
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
-                      labelText: 'Nome',
-                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                      labelText: "Nome",
+                      labelStyle: GoogleFonts.arimo(color: ColorStyle.white),
                     ),
                   ),
                   TextFormField(
@@ -194,21 +182,23 @@ class _CadastroPageState extends State<CadastroPage> {
                     controller: dateController,
                     onChanged: (value) => validateDate(value),
                     inputFormatters: [_dateFormatter],
-                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    style: GoogleFonts.arimo(
+                        color: ColorStyle.white, fontSize: 15),
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
                       labelText: 'Data de nascimento',
-                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                      labelStyle: GoogleFonts.arimo(color: ColorStyle.white),
                     ),
                   ),
                   TextFormField(
                     keyboardType: TextInputType.phone,
                     inputFormatters: [_phoneFormatter],
-                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    style: GoogleFonts.arimo(
+                        color: ColorStyle.white, fontSize: 15),
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
                       labelText: 'Telefone',
-                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                      labelStyle: GoogleFonts.arimo(color: ColorStyle.white),
                     ),
                   ),
                   Form(
@@ -221,13 +211,14 @@ class _CadastroPageState extends State<CadastroPage> {
                       onChanged: (value) {
                         emailUser = value;
                       },
-                      style:
-                          GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                      style: GoogleFonts.arimo(
+                          color: ColorStyle.white, fontSize: 15),
                       decoration: InputDecoration(
                           contentPadding:
                               const EdgeInsets.fromLTRB(0, 20, 30, 8),
                           labelText: 'E-mail',
-                          labelStyle: GoogleFonts.arimo(color: Colors.white),
+                          labelStyle:
+                              GoogleFonts.arimo(color: ColorStyle.white),
                           hintText: "Coloque '.com' no final",
                           hintStyle: const TextStyle(
                               color: Color.fromRGBO(255, 255, 255, 0.5))),
@@ -238,11 +229,12 @@ class _CadastroPageState extends State<CadastroPage> {
                       appPassword1 = value;
                     },
                     keyboardType: TextInputType.visiblePassword,
-                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    style: GoogleFonts.arimo(
+                        color: ColorStyle.white, fontSize: 15),
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
                       labelText: 'Senha',
-                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                      labelStyle: GoogleFonts.arimo(color: ColorStyle.white),
                     ),
                   ),
                   TextFormField(
@@ -251,11 +243,12 @@ class _CadastroPageState extends State<CadastroPage> {
                       appPassword2 = value;
                     },
                     keyboardType: TextInputType.visiblePassword,
-                    style: GoogleFonts.arimo(color: Colors.white, fontSize: 15),
+                    style: GoogleFonts.arimo(
+                        color: ColorStyle.white, fontSize: 15),
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
                       labelText: 'Confirmar senha',
-                      labelStyle: GoogleFonts.arimo(color: Colors.white),
+                      labelStyle: GoogleFonts.arimo(color: ColorStyle.white),
                     ),
                   ),
                   if (_showWarning)
@@ -276,43 +269,47 @@ class _CadastroPageState extends State<CadastroPage> {
                       onPressed: () {
                         setState(() {
                           // Validadores de informação
-                          if (validDate == false) {
-                            _showWarning = true;
-                            texto =
-                                "A data de nascimento está errada, deve ser dd/mm/aaaa";
-                          } else if (isEmailValid == "false") {
-                            _showWarning = true;
-                            texto = "O Email está invalido";
-                          } else if (isCodeValid == false) {
-                            geraCodigo();
-                            _sendEmail();
-                            _showTextFieldDialog(context);
-                          } else if (appPassword1 != appPassword2 ||
-                              appPassword1.length <= 8) {
-                            _showWarning = true;
-                            texto = "Senhas não coincidem ou campo vazio";
-                          } else {
-                            _showWarning = false;
-                            texto = "";
-                            Navigator.of(context)
-                                .pushReplacementNamed("/login");
-                          }
+                          validador(context);
                         });
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
-                        textStyle:
-                            const TextStyle(color: Colors.white, fontSize: 25),
+                        textStyle: const TextStyle(
+                            color: ColorStyle.white, fontSize: 25),
                         padding: const EdgeInsets.all(25),
                       ),
                       child: Text(
                         'Cadastro',
-                        style: GoogleFonts.arimo(color: Colors.white),
+                        style: GoogleFonts.arimo(color: ColorStyle.white),
                       ),
                     ),
                   )
                 ])))));
+  }
+
+  void validador(BuildContext context) {
+    if (validDate == false) {
+      _showWarning = true;
+      texto =
+          "A data de nascimento está errada, deve ser dd/mm/aaaa";
+    } else if (isEmailValid == "false") {
+      _showWarning = true;
+      texto = "O Email está invalido";
+    } else if (isCodeValid == false) {
+      geraCodigo();
+      _sendEmail();
+      _showTextFieldDialog(context);
+    } else if (appPassword1 != appPassword2 ||
+        appPassword1.length < 8) {
+      _showWarning = true;
+      texto = "Senhas não coincidem ou campo vazio";
+    } else {
+      _showWarning = false;
+      texto = "";
+      Navigator.of(context)
+          .pushReplacementNamed("/login");
+    }
   }
 }
 

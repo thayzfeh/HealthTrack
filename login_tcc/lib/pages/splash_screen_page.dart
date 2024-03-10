@@ -1,3 +1,4 @@
+import 'package:login_tcc/components/colors.dart';
 import 'package:login_tcc/pages/home_page.dart';
 import 'package:login_tcc/pages/login_page.dart';
 import 'package:login_tcc/services/prefs_service.dart';
@@ -34,17 +35,17 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             'images/logo_tcc.png',
             height: 100,
           ),
-          backgroundColor: const Color(0xff001975),
+          backgroundColor: ColorStyle.background,
           showLoader: false,
           futureNavigator: futureCall(),
         )),
         Container(
           height:
               MediaQuery.of(context).size.height * 0.3, // 30% do total de tela
-          color: const Color(0xff001975),
+          color: ColorStyle.background,
           // Pontinhos
           child: const SpinKitThreeBounce(
-            color: Colors.white,
+            color: ColorStyle.white,
             size: 45.0,
             duration: Duration(seconds: 1),
           ),
