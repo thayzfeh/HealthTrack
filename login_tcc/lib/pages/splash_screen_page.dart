@@ -27,7 +27,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-      // Stack para que a SplashScreen fique por baixo do loading (checar v2 para entender)
       child: Stack(alignment: Alignment.bottomCenter, children: [
         SizedBox(
             child: EasySplashScreen(
@@ -41,7 +40,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
         )),
         Container(
           height:
-              MediaQuery.of(context).size.height * 0.3, // 30% do total de tela
+              MediaQuery.of(context).size.height * 0.3,
           color: ColorStyle.background,
           // Pontinhos
           child: const SpinKitThreeBounce(

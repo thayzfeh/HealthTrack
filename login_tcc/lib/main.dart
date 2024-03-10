@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:login_tcc/pages/bpm_page.dart';
 import 'package:login_tcc/pages/cadastro_page.dart';
+import 'package:login_tcc/pages/connections.dart';
 import 'package:login_tcc/pages/home_page.dart';
 import 'package:login_tcc/pages/splash_screen_page.dart';
 import 'package:login_tcc/pages/maps_page.dart';
@@ -28,6 +29,7 @@ class TccHome extends StatelessWidget {
           '/maps': (context) => const MapWidget(),
           '/home': (context) => const HomePage(),
           '/bpm': (context) => const BpmPage(),
+          '/connection': (context) => const ConnectionPage(),
         });
   }
 }

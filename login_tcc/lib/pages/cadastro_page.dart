@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_tcc/components/buttons.dart';
 import 'package:login_tcc/components/colors.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mailer/mailer.dart';
@@ -95,8 +96,8 @@ class _CadastroPageState extends State<CadastroPage> {
 
   void dialogoErro(String texto) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(texto),
-      ));
+      content: Text(texto),
+    ));
   }
 
   bool validDate = false;
@@ -139,30 +140,16 @@ class _CadastroPageState extends State<CadastroPage> {
                 color: ColorStyle.background,
                 child: SingleChildScrollView(
                     child: Column(children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacementNamed("/login");
-                        },
-                        style: ElevatedButton.styleFrom(
-                            alignment: Alignment.center,
-                            backgroundColor: ColorStyle.background,
-                            shadowColor: Colors.transparent,
-                            padding: const EdgeInsets.fromLTRB(0, 0, 12, 0)),
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          size: 35,
-                          color: ColorStyle.white,
-                        ),
-                      ),
-                      const Image(
+                      RetroButton(path: "/login"),
+                      Image(
                         image: AssetImage('images/logo_tcc.png'),
                         filterQuality: FilterQuality.high,
                         width: 80,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 68,
                       )
                     ],
@@ -258,7 +245,7 @@ class _CadastroPageState extends State<CadastroPage> {
                     ),
                   const SizedBox(height: 20),
                   Container(
-                    width: 350.0,
+                    width: MediaQuery.of(context).size.width * 0.8,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
                         gradient: const LinearGradient(colors: [
@@ -268,15 +255,16 @@ class _CadastroPageState extends State<CadastroPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          // Validadores de informação
                           validador(context);
                         });
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
-                        textStyle: const TextStyle(
-                            color: ColorStyle.white, fontSize: 25),
+                        textStyle: TextStyle(
+                            color: ColorStyle.white,
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.045),
                         padding: const EdgeInsets.all(25),
                       ),
                       child: Text(
@@ -291,8 +279,7 @@ class _CadastroPageState extends State<CadastroPage> {
   void validador(BuildContext context) {
     if (validDate == false) {
       _showWarning = true;
-      texto =
-          "A data de nascimento está errada, deve ser dd/mm/aaaa";
+      texto = "A data de nascimento está errada, deve ser dd/mm/aaaa";
     } else if (isEmailValid == "false") {
       _showWarning = true;
       texto = "O Email está invalido";
@@ -300,15 +287,13 @@ class _CadastroPageState extends State<CadastroPage> {
       geraCodigo();
       _sendEmail();
       _showTextFieldDialog(context);
-    } else if (appPassword1 != appPassword2 ||
-        appPassword1.length < 8) {
+    } else if (appPassword1 != appPassword2 || appPassword1.length < 8) {
       _showWarning = true;
       texto = "Senhas não coincidem ou campo vazio";
     } else {
       _showWarning = false;
       texto = "";
-      Navigator.of(context)
-          .pushReplacementNamed("/login");
+      Navigator.of(context).pushReplacementNamed("/login");
     }
   }
 }
@@ -324,7 +309,6 @@ void geraCodigo() {
 
 String isEmailValid = "";
 
-// Responsável pelo envio do e-mail de verificação
 class Email {
   final String username =
       'logintcc222@gmail.com'; // Email usado usado no envio do código

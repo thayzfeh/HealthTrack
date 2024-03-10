@@ -1,4 +1,4 @@
-import 'package:login_tcc/components/button_container.dart';
+import 'package:login_tcc/components/buttons.dart';
 import 'package:login_tcc/components/colors.dart';
 import 'package:login_tcc/components/login_textformfield.dart';
 import 'package:login_tcc/controllers/login_controller.dart';
@@ -77,13 +77,13 @@ class _LoginPageState extends State<LoginPage> {
                         asset: 'images/lock.png',
                         isPassword: true),
                     const SizedBox(height: 60),
-                    ButtonContainer(texto: "Entrar", nav: _onPressedLogin),
+                    PrimaryButton(texto: "Entrar", nav: _onPressedLogin),
                     const SizedBox(height: 10),
                     const Text('OU',
                         style:
                             TextStyle(fontSize: 22, color: ColorStyle.white)),
                     const SizedBox(height: 10),
-                    ButtonContainer(
+                    PrimaryButton(
                         texto: 'Cadastrar-se', nav: _onPressedCadastro),
                   ],
                 ),
@@ -96,8 +96,7 @@ class _LoginPageState extends State<LoginPage> {
         user: User(
             email: emailController.text, password: passwordController.text));
     if (loginController.isValid()) {
-      Navigator.of(context)
-          .pushReplacementNamed('/home'); // Manda pra tela inicial
+      Navigator.of(context).pushReplacementNamed('/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Login incorreto!!!'),
