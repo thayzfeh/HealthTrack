@@ -91,17 +91,13 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  void _onPressedLogin() {
+  Future<void> _onPressedLogin() async {
     var loginController = LoginController(
         user: User(
             email: emailController.text, password: passwordController.text));
-    if (loginController.isValid()) {
+    if (await loginController.isValid(context)) {
       Navigator.of(context).pushReplacementNamed('/home');
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Login incorreto!!!'),
-      ));
-
       emailController.clear();
       passwordController.clear();
     }

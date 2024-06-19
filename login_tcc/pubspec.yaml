@@ -50,6 +50,8 @@ dependencies:
   mailer: ^6.1.0
   email_validator: ^2.1.17
   syncfusion_flutter_charts: ^24.2.9
+  http: ^1.2.1
+  image_cropper: ^7.0.5
 
 dev_dependencies:
   flutter_test:

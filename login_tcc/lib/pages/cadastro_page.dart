@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_tcc/components/buttons.dart';
 import 'package:login_tcc/components/colors.dart';
+import 'package:login_tcc/controllers/register_controller.dart';
+import 'package:login_tcc/models/user.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -27,72 +29,20 @@ class _CadastroPageState extends State<CadastroPage> {
     mask: "##/##/####",
     filter: {'#': RegExp(r'[0-9]')},
   );
+  final _cpfFormatter = MaskTextInputFormatter(
+    mask: "###.###.###-##",
+    filter: {'#': RegExp(r'[0-9]')},
+  );
 
   bool _showWarning = false;
 
-  final TextEditingController _textController = TextEditingController();
-  void _showTextFieldDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Digite o código de 6 digitos recebido no email:'),
-          content: TextField(
-            controller: _textController,
-            onChanged: (value) => validaCode(value),
-            decoration: const InputDecoration(
-              hintText: 'Digite aqui',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Salvar'),
-            ),
-            TextButton(
-              onPressed: () {
-                geraCodigo();
-              },
-              child: const Text('Gerar novo Código'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   String emailUser = "";
-
+  String nameUser = "";
   var appPassword1 = "";
   var appPassword2 = "";
   String texto = '';
-
-  bool isCodeValid = false;
-
-  void validaCode(String value) {
-    if (value != codeAsString) {
-      isCodeValid = false;
-    } else {
-      isCodeValid = true;
-    }
-  }
-
-  final Email email = Email();
-  void _sendEmail() async {
-    final success = await email.sendMessage(
-      emailUser,
-      'Código de verificação de Email para o App Login_tcc: $codeAsString',
-      'Código para acesso: $codeAsString',
-    );
-
-    if (success && isEmailValid == "true") {
-      dialogoErro('E-mail enviado com sucesso!');
-    } else {
-      dialogoErro('Falha ao enviar o e-mail.');
-    }
-  }
+  String phoneUser = '';
+  String cpfUser = '';
 
   void dialogoErro(String texto) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -101,7 +51,7 @@ class _CadastroPageState extends State<CadastroPage> {
   }
 
   bool validDate = false;
-
+  String isEmailValid = 'false';
   final TextEditingController dateController = TextEditingController();
 
   Object validateDate(String value) {
@@ -163,6 +113,11 @@ class _CadastroPageState extends State<CadastroPage> {
                       labelText: "Nome",
                       labelStyle: GoogleFonts.arimo(color: ColorStyle.white),
                     ),
+                    onChanged: (value) => {
+                      setState(() {
+                        nameUser = value;
+                      })
+                    },
                   ),
                   TextFormField(
                     keyboardType: TextInputType.datetime,
@@ -187,6 +142,27 @@ class _CadastroPageState extends State<CadastroPage> {
                       labelText: 'Telefone',
                       labelStyle: GoogleFonts.arimo(color: ColorStyle.white),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        phoneUser = value;
+                      });
+                    },
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [_cpfFormatter],
+                    style: GoogleFonts.arimo(
+                        color: ColorStyle.white, fontSize: 15),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(0, 20, 30, 8),
+                      labelText: "CPF",
+                      labelStyle: GoogleFonts.arimo(color: ColorStyle.white),
+                    ),
+                    onChanged: (value) => {
+                      setState(() {
+                        cpfUser = value;
+                      })
+                    },
                   ),
                   Form(
                     autovalidateMode: AutovalidateMode.always,
@@ -249,8 +225,8 @@ class _CadastroPageState extends State<CadastroPage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
                         gradient: const LinearGradient(colors: [
-                          Color(0xff5de0e6),
-                          Color(0xff004aad),
+                          Color.fromARGB(255, 255, 255, 255),
+                          Color.fromARGB(255, 226, 226, 226),
                         ])),
                     child: ElevatedButton(
                       onPressed: () {
@@ -262,75 +238,46 @@ class _CadastroPageState extends State<CadastroPage> {
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
                         textStyle: TextStyle(
-                            color: ColorStyle.white,
+                            color: Color.fromARGB(255, 0, 0, 0),
                             fontSize:
                                 MediaQuery.of(context).size.height * 0.045),
                         padding: const EdgeInsets.all(25),
                       ),
                       child: Text(
                         'Cadastro',
-                        style: GoogleFonts.arimo(color: ColorStyle.white),
+                        style: GoogleFonts.arimo(
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   )
                 ])))));
   }
 
-  void validador(BuildContext context) {
+  void validador(BuildContext context) async {
     if (validDate == false) {
       _showWarning = true;
       texto = "A data de nascimento está errada, deve ser dd/mm/aaaa";
     } else if (isEmailValid == "false") {
       _showWarning = true;
       texto = "O Email está invalido";
-    } else if (isCodeValid == false) {
-      geraCodigo();
-      _sendEmail();
-      _showTextFieldDialog(context);
     } else if (appPassword1 != appPassword2 || appPassword1.length < 8) {
       _showWarning = true;
-      texto = "Senhas não coincidem ou campo vazio";
+      texto = "Senhas não coincidem ou senha menor que 8 digitos";
     } else {
       _showWarning = false;
       texto = "";
-      Navigator.of(context).pushReplacementNamed("/login");
-    }
-  }
-}
-
-// Gerador de código de 6 digítos
-final random = Random();
-var sixDigitCode = 100000 + random.nextInt(900000);
-String codeAsString = '$sixDigitCode';
-void geraCodigo() {
-  sixDigitCode = 100000 + random.nextInt(900000);
-  codeAsString = '$sixDigitCode';
-}
-
-String isEmailValid = "";
-
-class Email {
-  final String username =
-      'logintcc222@gmail.com'; // Email usado usado no envio do código
-  final String appPassword = 'sqog pflp kzbu olsr'; // Senha do e-mail
-  Future<bool> sendMessage(
-      String recipient, String subject, String body) async {
-    final smtpServer = gmail(username, appPassword);
-
-    final message = Message()
-      ..from = Address(username)
-      ..recipients.add(recipient)
-      ..subject = subject
-      ..text = body;
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      isEmailValid = "true";
-      // ignore: unnecessary_null_comparison
-      return sendReport != null;
-    } catch (e) {
-      isEmailValid = "false";
-      return false;
+      RegisterController novo_registro = RegisterController(
+          user: User(
+              email: emailUser,
+              password: appPassword1,
+              username: nameUser,
+              birth: dateController.text,
+              phone: phoneUser,
+              cpf: cpfUser));
+      if (await novo_registro.isValid(context)) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
     }
   }
 }

@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PrefsService {
   static const String _key = 'key';
 
-  static save(String user) async {
+  static save(Map user) async {
     var prefs = await SharedPreferences.getInstance();
     prefs.setString(
         _key,
