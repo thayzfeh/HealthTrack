@@ -80,7 +80,7 @@ class MapWidgetState extends State<MapWidget> {
                     keepAlive: true,
                     initialCenter: _currentLocation,
                     initialZoom: 16.0,
-                    onPositionChanged: (MapPosition position, bool gesture) {
+                    onPositionChanged: (MapCamera position, bool gesture) {
                       if (gesture) {
                         _zoomLevel = _mapController.camera.zoom;
                       }

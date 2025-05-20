@@ -25,8 +25,8 @@ class _PrimaryButtonState extends State<PrimaryButton> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             gradient: const LinearGradient(colors: [
-              Color.fromARGB(255, 255, 255, 255),
-              Color.fromARGB(255, 226, 226, 226),
+              Color(0xff5de0e6),
+              Color(0xff004aad),
             ])),
         child: ElevatedButton(
             onPressed: widget._nav,
@@ -34,13 +34,13 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               backgroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
               textStyle: TextStyle(
-                  color: const Color.fromARGB(255, 0, 0, 0),
+                  color: ColorStyle.white,
                   fontSize: MediaQuery.of(context).size.height * 0.045),
               padding: const EdgeInsets.all(25),
             ),
             child: Text(widget._texto,
                 style: GoogleFonts.arimo(
-                    color: const Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold))));
+                    color: ColorStyle.white, fontWeight: FontWeight.bold))));
   }
 }
 
