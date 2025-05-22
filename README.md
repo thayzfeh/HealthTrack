@@ -1,4 +1,3 @@
-```md
 # HealthTrack
 
 Este projeto é um aplicativo Flutter desenvolvido como parte de um Trabalho de Conclusão de Curso (TCC). O objetivo do app é fornecer uma plataforma para monitoramento de saúde, permitindo ao usuário acompanhar batimentos cardíacos, pressão arterial, glicemia, além de funcionalidades de conexão e localização.
