@@ -41,7 +41,4 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar
 
 Este projeto está sob a licença MIT.
 
----
-
 Para mais informações sobre Flutter, consulte a [documentação oficial](https://docs.flutter.dev/).
-```
